@@ -329,6 +329,132 @@
                 display: none;
             }
         }
+
+
+
+        .gallery-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lightbox.is-open {
+  display: flex;
+}
+
+.lightbox__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(8px);
+}
+
+.lightbox__dialog {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 22px;
+  padding: 20px;
+  background: #141418;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+
+.lightbox__close {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightbox__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.lightbox__img {
+  width: 100%;
+  max-height: 62vh;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #0b0b0e;
+}
+
+.lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(20, 20, 24, 0.78);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightbox__nav--prev {
+  left: 10px;
+}
+
+.lightbox__nav--next {
+  right: 10px;
+}
+
+.lightbox__caption {
+  margin-top: 16px;
+}
+
+.lightbox__index {
+  font-size: 0.85rem;
+  opacity: 0.65;
+}
+
+.lightbox__title {
+  margin: 4px 0 6px;
+  font-size: 1.3rem;
+}
+
+.lightbox__desc {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  opacity: 0.85;
+            }
+        
     </style>
 </head>
 <body>
@@ -432,8 +558,51 @@
         </div>
     </section>
 
-    <!-- Screen 5: How to order -->
-    <section id="screen-5">
+
+
+    <!-- Screen 5: Art Gallery -->
+<section id="screen-5" class="art-gallery-section">
+  <div class="gallery-header">
+    <span class="screen-number">05 / АРТ-ГАЛЕРЕЯ</span>
+    <h2 class="section-title">Арт-Галерея</h2>
+    <p class="gallery-subtitle">Примеры карт света — листайте карусель, чтобы рассмотреть детали</p>
+  </div>
+
+  <div class="carousel-wrapper" aria-label="Карусель карт света">
+    <div class="carousel-track" id="lightCardsTrack">
+      <article class="gallery-card">
+        <div class="gallery-card__media">
+          <img src="card-power.jpg" alt="Карта света Power" loading="lazy">
+        </div>
+        <div class="gallery-card__meta">
+          <span class="gallery-card__index">01</span>
+          <h3 class="gallery-card__title">Power</h3>
+        </div>
+      </article>
+
+      <article class="gallery-card">
+        <div class="gallery-card__media">
+          <img src="card-divine-simplicity.jpg" alt="Карта света Divine Simplicity" loading="lazy">
+        </div>
+        <div class="gallery-card__meta">
+          <span class="gallery-card__index">02</span>
+          <h3 class="gallery-card__title">Divine Simplicity</h3>
+        </div>
+      </article>
+
+      <!-- Далее можно добавлять следующие карты (до 10) по тому же шаблону -->
+    </div>
+
+    <div class="carousel-controls">
+      <button type="button" class="carousel-btn" id="prevCardBtn" aria-label="Предыдущая карта">←</button>
+      <div class="carousel-dots" id="carouselDots" aria-hidden="true"></div>
+      <button type="button" class="carousel-btn" id="nextCardBtn" aria-label="Следующая карта">→</button>
+    </div>
+  </div>
+</section>
+
+    <!-- Screen 6: How to order -->
+    <section id="screen-6">
         <div class="order-container">
             <span class="screen-number">05 / Контакти</span>
             <h2 class="title-section">Почати трансформацію</h2>
@@ -452,6 +621,28 @@
         </div>
     </section>
 
+
+
+    <!-- Lightbox Modal for Art Gallery -->
+<div class="lightbox" id="cardLightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Просмотр карты света">
+  <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+  <div class="lightbox__dialog">
+    <button type="button" class="lightbox__close" id="lightboxClose" aria-label="Закрыть просмотр">×</button>
+
+    <div class="lightbox__stage">
+      <button type="button" class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Предыдущая карта">‹</button>
+      <img class="lightbox__img" id="lightboxImg" src="" alt="">
+      <button type="button" class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Следующая карта">›</button>
+    </div>
+
+    <div class="lightbox__caption">
+      <span class="lightbox__index" id="lightboxIndex"></span>
+      <h3 class="lightbox__title" id="lightboxTitle"></h3>
+      <p class="lightbox__desc" id="lightboxDesc"></p>
+    </div>
+  </div>
+</div>
+    
     <script>
         const sections = document.querySelectorAll('section');
         const dots = document.querySelectorAll('.dot');
@@ -467,6 +658,118 @@
                 dot.classList.toggle('active', i === index);
             });
         });
+        (function () {
+  const track = document.getElementById('lightCardsTrack');
+  const prevBtn = document.getElementById('prevCardBtn');
+  const nextBtn = document.getElementById('nextCardBtn');
+  const dotsContainer = document.getElementById('carouselDots');
+
+  const lightbox = document.getElementById('cardLightbox');
+  const backdrop = document.getElementById('lightboxBackdrop');
+  const closeBtn = document.getElementById('lightboxClose');
+  const lbPrev = document.getElementById('lightboxPrev');
+  const lbNext = document.getElementById('lightboxNext');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbIndex = document.getElementById('lightboxIndex');
+  const lbTitle = document.getElementById('lightboxTitle');
+  const lbDesc = document.getElementById('lightboxDesc');
+
+  if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+
+  const slides = Array.from(track.querySelectorAll('.gallery-card'));
+  if (!slides.length) return;
+
+  let currentIndex = 0;
+
+  const cardsData = slides.map((slide, idx) => {
+    const img = slide.querySelector('img');
+    const titleEl = slide.querySelector('.gallery-card__title');
+    const indexEl = slide.querySelector('.gallery-card__index');
+    return {
+      src: img ? (img.currentSrc || img.getAttribute('src') || '') : '',
+      alt: img ? (img.getAttribute('alt') || '') : '',
+      title: titleEl ? titleEl.textContent.trim() : `Карта ${idx + 1}`,
+      index: indexEl ? indexEl.textContent.trim() : String(idx + 1).padStart(2, '0'),
+      description: slide.getAttribute('data-description') || ''
+    };
+  });
+
+  const dots = slides.map((_, idx) => {
+    const dot = document.createElement('span');
+    dot.className = 'carousel-dot' + (idx === 0 ? ' is-active' : '');
+    dotsContainer.appendChild(dot);
+    return dot;
+  });
+
+  function getStep() {
+    const first = slides[0];
+    const gap = parseFloat(getComputedStyle(track).gap) || 20;
+    return first.getBoundingClientRect().width + gap;
+  }
+
+  prevBtn.addEventListener('click', () => {
+    track.scrollBy({ left: -getStep(), behavior: 'smooth' });
+  });
+
+  nextBtn.addEventListener('click', () => {
+    track.scrollBy({ left: getStep(), behavior: 'smooth' });
+  });
+
+  track.addEventListener('scroll', () => {
+    const step = getStep();
+    const activeIndex = Math.min(
+      slides.length - 1,
+      Math.max(0, Math.round(track.scrollLeft / step))
+    );
+    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === activeIndex));
+  }, { passive: true });
+
+  function renderLightbox(index) {
+    currentIndex = (index + cardsData.length) % cardsData.length;
+    const item = cardsData[currentIndex];
+    if (!lbImg || !lbTitle || !lbIndex || !lbDesc) return;
+
+    lbImg.src = item.src;
+    lbImg.alt = item.alt || item.title;
+    lbIndex.textContent = `${item.index} / ${String(cardsData.length).padStart(2, '0')}`;
+    lbTitle.textContent = item.title;
+    lbDesc.textContent = item.description;
+    lbDesc.style.display = item.description ? 'block' : 'none';
+  }
+
+  function openLightbox(index) {
+    if (!lightbox) return;
+    renderLightbox(index);
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  slides.forEach((slide, idx) => {
+    slide.addEventListener('click', () => openLightbox(idx));
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+  if (backdrop) backdrop.addEventListener('click', closeLightbox);
+  if (lbPrev) lbPrev.addEventListener('click', () => renderLightbox(currentIndex - 1));
+  if (lbNext) lbNext.addEventListener('click', () => renderLightbox(currentIndex + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox || !lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') renderLightbox(currentIndex - 1);
+    if (e.key === 'ArrowRight') renderLightbox(currentIndex + 1);
+  });
+})();
+      
+
     </script>
 </body>
   </html>
